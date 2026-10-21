@@ -1,0 +1,90 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+# Cancel superseded runs of the same branch/PR.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  verify:
+    name: Verify (Node ${{ matrix.node }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        # The package claims Node >=20. Vitest 5 itself needs Node 22+, so the Node 20 leg
+        # builds the package and checks the built output; tests run on Node 22.
+        node: [20, 22]
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: ${{ matrix.node }}
+          cache: npm
+
+      - run: npm ci
+
+      - name: Typecheck
+        if: matrix.node == 22
+        run: npm run typecheck
+
+      - name: Unit tests
+        if: matrix.node == 22
+        run: npm test
+
+      - name: Build
+        run: npm run build
+
+      - name: Smoke test the built package (ESM, CJS, server render)
+        run: npm run smoke
+
+      - name: publint and Are The Types Wrong
+        run: npm run check:package
+
+  browser-tests:
+    name: Browser tests (React ${{ matrix.react }})
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        # peerDependencies allow React 18.2+ and 19, so both are tested.
+        react: [18, 19]
+    steps:
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Use React ${{ matrix.react }}
+        if: matrix.react == 18
+        run: npm install --no-save react@^18.3 react-dom@^18.3 react-is@^18.3
+
+      - name: Cache Playwright browsers
+        id: playwright-cache
+        uses: actions/cache@v6
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('package-lock.json') }}
+
+      - name: Install Chromium (with system dependencies)
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+        run: npx playwright install --with-deps chromium
+
+      - name: Install system dependencies only (browser came from cache)
+        if: steps.playwright-cache.outputs.cache-hit == 'true'
+        run: npx playwright install-deps chromium
+
+      - name: Browser tests
+        run: npm run test:browser
