@@ -4,3 +4,5 @@ dist/
 .DS_Store
 coverage/
 storybook-static/
+.vitest/
+__screenshots__/
