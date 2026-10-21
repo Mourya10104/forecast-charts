@@ -13,4 +13,200 @@
   --fc-surface: #1a1a1a;
   --fc-border: #333333;
   --fc-focus: #39ff14;
+  --fc-positive: #f87171;
+  --fc-negative: #4ade80;
+  --fc-thumb: 18px;
+}
+
+/* ---- Shared ---------------------------------------------------------- */
+
+/* Visually hidden but still read by screen readers. */
+.fc-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  border: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+/* ---- ForecastChart --------------------------------------------------- */
+
+.fc-chart {
+  position: relative;
+  width: 100%;
+  color: var(--fc-text);
+}
+
+.fc-empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--fc-muted);
+}
+
+.fc-tooltip {
+  padding: 1rem;
+  background: var(--fc-surface);
+  border: 1px solid var(--fc-border);
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  font-size: 0.875rem;
+  color: var(--fc-text);
+}
+
+.fc-tooltip p {
+  margin: 0;
+}
+
+.fc-tooltip__time {
+  margin-bottom: 0.5rem !important;
+  font-weight: 600;
+  color: var(--fc-muted);
+}
+
+.fc-tooltip__delta {
+  margin-top: 0.5rem !important;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--fc-border);
+  color: var(--fc-muted);
+}
+
+.fc-tooltip__delta-label {
+  font-weight: 600;
+}
+
+.fc-tooltip__delta-up {
+  color: var(--fc-positive);
+}
+
+.fc-tooltip__delta-down {
+  color: var(--fc-negative);
+}
+
+/* ---- HorizonSlider --------------------------------------------------- */
+
+.fc-slider {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+  color: var(--fc-text);
+}
+
+.fc-slider__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.fc-slider__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--fc-muted);
+}
+
+.fc-slider__value {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-weight: 700;
+  color: var(--fc-forecast);
+}
+
+.fc-slider__input {
+  width: 100%;
+  height: var(--fc-thumb);
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.fc-slider__input:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Keep keyboard focus clearly visible. */
+.fc-slider__input:focus-visible {
+  outline: 2px solid var(--fc-focus);
+  outline-offset: 4px;
+  border-radius: 999px;
+}
+
+.fc-slider__input::-webkit-slider-runnable-track {
+  height: 8px;
+  background: var(--fc-border);
+  border-radius: 999px;
+}
+
+.fc-slider__input::-moz-range-track {
+  height: 8px;
+  background: var(--fc-border);
+  border-radius: 999px;
+}
+
+.fc-slider__input::-webkit-slider-thumb {
+  width: var(--fc-thumb);
+  height: var(--fc-thumb);
+  margin-top: calc((8px - var(--fc-thumb)) / 2);
+  background: var(--fc-forecast);
+  border: 2px solid var(--fc-surface);
+  border-radius: 50%;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.fc-slider__input::-moz-range-thumb {
+  box-sizing: border-box;
+  width: var(--fc-thumb);
+  height: var(--fc-thumb);
+  background: var(--fc-forecast);
+  border: 2px solid var(--fc-surface);
+  border-radius: 50%;
+}
+
+/* Tick labels: --fc-p is the position as 0-100; the thumb-width term keeps labels under the thumb's real travel. */
+.fc-slider__ticks {
+  position: relative;
+  height: 1.25em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.75rem;
+  color: var(--fc-muted);
+}
+
+.fc-slider__tick {
+  position: absolute;
+  top: 0;
+  left: calc(var(--fc-p) * 1% + (0.5 - var(--fc-p) / 100) * var(--fc-thumb));
+  transform: translateX(-50%);
+  white-space: nowrap;
+}
+
+/* Windows high-contrast mode: use system colours so the track and thumb stay visible. */
+@media (forced-colors: active) {
+  .fc-slider__input::-webkit-slider-runnable-track {
+    background: ButtonText;
+  }
+  .fc-slider__input::-moz-range-track {
+    background: ButtonText;
+  }
+  .fc-slider__input::-webkit-slider-thumb {
+    background: Highlight;
+    border-color: ButtonText;
+  }
+  .fc-slider__input::-moz-range-thumb {
+    background: Highlight;
+    border-color: ButtonText;
+  }
+  .fc-slider__input:focus-visible {
+    outline-color: Highlight;
+  }
 }
