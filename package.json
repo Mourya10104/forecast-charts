@@ -28,6 +28,9 @@
   "files": [
     "dist"
   ],
+  "engines": {
+    "node": ">=18"
+  },
   "publishConfig": {
     "access": "public"
   },
@@ -35,7 +38,7 @@
     "build": "tsup",
     "typecheck": "tsc --noEmit",
     "smoke": "node scripts/smoke.mjs",
-    "check:package": "publint && attw --pack . --profile node16",
+    "check:package": "publint && attw --pack . --exclude-entrypoints ./styles.css",
     "prepublishOnly": "npm run typecheck && npm run build && npm run smoke"
   },
   "peerDependencies": {
