@@ -1,0 +1,67 @@
+{
+  "name": "@mourya10104/forecast-charts",
+  "version": "0.0.0",
+  "description": "React components for comparing actual and forecast time series: a chart and a forecast-horizon slider.",
+  "license": "MIT",
+  "author": "Mourya Penmetsa",
+  "type": "module",
+  "sideEffects": [
+    "**/*.css"
+  ],
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/index.d.cts",
+        "default": "./dist/index.cjs"
+      }
+    },
+    "./styles.css": "./dist/styles.css",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsup",
+    "typecheck": "tsc --noEmit",
+    "smoke": "node scripts/smoke.mjs",
+    "check:package": "publint && attw --pack . --profile node16",
+    "prepublishOnly": "npm run typecheck && npm run build && npm run smoke"
+  },
+  "peerDependencies": {
+    "react": "^18.2.0 || ^19.0.0",
+    "react-dom": "^18.2.0 || ^19.0.0",
+    "react-is": "^18.2.0 || ^19.0.0",
+    "recharts": "^3.8.0"
+  },
+  "keywords": [
+    "react",
+    "chart",
+    "forecast",
+    "time-series",
+    "slider",
+    "recharts"
+  ],
+  "devDependencies": {
+    "@arethetypeswrong/cli": "^0.18.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "publint": "^0.3.25",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "react-is": "^19.3.1",
+    "recharts": "^3.10.1",
+    "tsup": "^9.0.0",
+    "typescript": "^5.9.3"
+  }
+}
