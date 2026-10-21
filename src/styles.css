@@ -1,0 +1,16 @@
+/*
+ * Theme variables. Override any of them on :root or on a parent element, e.g.
+ *   .my-dashboard { --fc-actual: #2563eb; }
+ * The defaults match the dark dashboard these components were extracted from.
+ */
+:root {
+  --fc-actual: #0088ff;
+  --fc-forecast: #39ff14;
+  --fc-grid: #333333;
+  --fc-axis: #888888;
+  --fc-text: #ededed;
+  --fc-muted: #9ca3af;
+  --fc-surface: #1a1a1a;
+  --fc-border: #333333;
+  --fc-focus: #39ff14;
+}
