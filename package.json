@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "description": "React components for comparing actual and forecast time series: a chart and a forecast-horizon slider.",
   "license": "MIT",
-  "author": "Mourya Penmetsa",
+  "author": "Mourya Varma",
   "type": "module",
   "sideEffects": [
     "**/*.css"
